@@ -1,36 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { List, ListItem, ListItemText, Typography } from '@mui/material';
-import { getAuthHeaders } from '../../utils/authHeader';
+import { getBooks } from '../api';
+import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
+import BookCard from "./BookCard";
 
-interface Book {
-    id: number;
-    isbn: string;
-}
-
-interface BookListProps {
-    userKey: string | null;
-    userSecret: string | null;
-}
-
-const BookList: React.FC<BookListProps> = ({ userKey, userSecret }) => {
-    const [books, setBooks] = useState<Book[]>([]);
-
+const BookList = () => {
+    const [books, setBooks] = useState<any[]>([]);
+    console.log(books)
     const fetchBooks = async () => {
-        if (!userKey || !userSecret) {
-            console.error('Foydalanuvchi kaliti yoki maxfiy so\'z mavjud emas.');
-            return;
-        }
-
-        const response = await fetch('https://no23.lavina.tech/books', {
-            method: 'GET',
-            headers: getAuthHeaders('GET', '/books', {}, userKey, userSecret),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            setBooks(data);
-        } else {
-            console.error('Kitoblarni olishda xato');
+        try {
+            const response = await getBooks();
+            setBooks(response.data); // Kiritilgan malumotlarni olish
+        } catch (error) {
+            console.error('Kitoblarni olishda xato', error);
         }
     };
 
@@ -39,18 +20,16 @@ const BookList: React.FC<BookListProps> = ({ userKey, userSecret }) => {
     }, []);
 
     return (
-        <div>
-            <Typography variant="h6" gutterBottom>
-                Kitoblar Ro'yxati
+        <Box sx={{ mt: 4 }}>
+            <Typography variant="h5" component="h1" sx={{ mb: 2 }}>
+                Kitoblar ro'yxati
             </Typography>
-            <List>
-                {books.map((book) => (
-                    <ListItem key={book.id}>
-                        <ListItemText primary={book.isbn} />
-                    </ListItem>
+            <List className="card-body">
+                {books?.data?.map((item, index) => (
+                        <BookCard book={item.book} status={item.status} key={index} />
                 ))}
             </List>
-        </div>
+        </Box>
     );
 };
 
