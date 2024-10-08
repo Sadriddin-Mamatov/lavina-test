@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
+import {getBooks} from "../api";
 
 interface Book {
     id: number;
@@ -19,6 +20,19 @@ interface EditBookProps {
 
 const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) => {
     const [formData, setFormData] = useState<Book | null>(null);
+    console.log(formData)
+    const fetchBooks = async () => {
+        try {
+            const response = await getBooks();
+            setFormData(response.data.data); // Kiritilgan malumotlarni olish
+        } catch (error) {
+            console.error('Kitoblarni olishda xato', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
 
     useEffect(() => {
         const bookToEdit = getBookById(bookId);
