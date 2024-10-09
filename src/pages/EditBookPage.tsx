@@ -28,7 +28,7 @@ const EditBook: React.FC<EditBookProps> = () => {
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
-            setFormData(response?.data?.data);
+            setFormData(response?.data?.data?.find((book) => book?.book?.id === bookId));
         } catch (error) {
             console.error('error', error);
         }
@@ -38,11 +38,9 @@ const EditBook: React.FC<EditBookProps> = () => {
         fetchBooks();
     }, []);
 
-    const {book} = formData?.find((book) => book?.book?.id === bookId) || null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        console.log(name, value)
         if (formData) {
          const sass=  { ...formData, [name]: value }
             console.log(sass, "daskdnasdsdns")
@@ -66,6 +64,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="Title"
                     name="title"
+                    value={formData?.title}
                     onChange={handleChange}
                     required
                 />
@@ -90,6 +89,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="ISBN"
                     name="isbn"
+                    value={formData?.isbn}
                     onChange={handleChange}
                     required
                 />
@@ -99,6 +99,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     label="Pages"
                     name="pages"
                     type="number"
+                    value={formData?.pages}
                     onChange={handleChange}
                     required
                 />
