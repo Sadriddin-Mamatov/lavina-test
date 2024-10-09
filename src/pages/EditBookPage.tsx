@@ -14,8 +14,8 @@ interface Book {
 }
 
 interface EditBookProps {
-    bookId: number; // ID of the book to be edited
-    updateBook: (updatedBook: Book) => void; // Function to update the book's details
+    bookId: number;
+    updateBook: (updatedBook: Book) => void;
 }
 
 const EditBook: React.FC<EditBookProps> = () => {
@@ -24,9 +24,8 @@ const EditBook: React.FC<EditBookProps> = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<Book | null>(null);
-    console.log(formData, "djs form dataaaaa")
     const [changedValue, setChangedValue] = useState<Book | null>(null);
-    console.log(changedValue, "dasbdsdbsdhsahdbsbadbasb changed value---")
+
     const editBook=formData?.book;
 
     const fetchBooks = async () => {
@@ -55,6 +54,7 @@ const EditBook: React.FC<EditBookProps> = () => {
         e.preventDefault();
         updateBook(id, changedValue)
         navigate("/")
+        window.location.reload()
     };
 
     if (!formData) return <Typography>Loading...</Typography>;
