@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 import {getBooks} from "../api";
+import {useParams} from "react-router-dom";
 
 interface Book {
     id: number;
@@ -18,7 +19,11 @@ interface EditBookProps {
     updateBook: (updatedBook: Book) => void; // Function to update the book's details
 }
 
-const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) => {
+const EditBook: React.FC<EditBookProps> = () => {
+    const { id } = useParams<{ id: string }>();
+    const bookId = Number(id);
+
+    console.log(bookId, "djansdjasjdnasjdnas")
     const [formData, setFormData] = useState<Book | null>(null);
     console.log(formData)
     const fetchBooks = async () => {
@@ -33,18 +38,23 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
     useEffect(() => {
         fetchBooks();
     }, []);
+    const getBookById = (id: number) => {
+        return formData?.find((book) => book.id === id) || null;
+    };
+    console.log(getBookById())
 
-    useEffect(() => {
-        const bookToEdit = getBookById(bookId);
-        if (bookToEdit) {
-            setFormData(bookToEdit);
-        }
-    }, [bookId, getBookById]);
+    // useEffect(() => {
+    //     const bookToEdit = getBookById(bookId);
+    //     console.log(bookToEdit, "asdbahadbasdbadh idddddddddddddddd")
+    //     if (bookToEdit) {
+    //         setFormData(bookToEdit);
+    //     }
+    // }, [bookId, getBookById]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         if (formData) {
-            setFormData({ ...formData, [name]: value });
+            setFormData({ ...getBookById.book, [name]: value });
         }
     };
 
@@ -68,7 +78,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     margin="normal"
                     label="Title"
                     name="title"
-                    value={formData.title}
+                    value={getBookById.book?.title}
                     onChange={handleChange}
                     required
                 />
@@ -77,7 +87,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     margin="normal"
                     label="Author"
                     name="author"
-                    value={formData.author}
+                    value={getBookById.book?.author}
                     onChange={handleChange}
                     required
                 />
@@ -86,7 +96,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     margin="normal"
                     label="Cover URL"
                     name="cover"
-                    value={formData.cover}
+                    value={getBookById.book?.cover}
                     onChange={handleChange}
                     required
                 />
@@ -95,7 +105,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     margin="normal"
                     label="ISBN"
                     name="isbn"
-                    value={formData.isbn}
+                    value={getBookById.book?.isbn}
                     onChange={handleChange}
                     required
                 />
@@ -105,7 +115,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     label="Pages"
                     name="pages"
                     type="number"
-                    value={formData.pages}
+                    value={getBookById.book?.pages}
                     onChange={handleChange}
                     required
                 />
@@ -115,7 +125,7 @@ const EditBook: React.FC<EditBookProps> = ({ bookId, getBookById, updateBook }) 
                     label="Published Year"
                     name="published"
                     type="number"
-                    value={formData.published}
+                    value={getBookById.book?.published}
                     onChange={handleChange}
                     required
                 />

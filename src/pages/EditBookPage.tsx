@@ -1,46 +1,124 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import EditBook from '../components/EditBook';
-import {getBooks} from "../api";
+import {editBook, getBooks } from "../api";
+import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 
+interface Book {
+    id: number;
+    title: string;
+    author: string;
+    cover: string;
+    isbn: string;
+    pages: number;
+    published: number;
+}
 
-const EditBookPage: React.FC = () => {
+interface EditBookProps {
+    bookId: number; // ID of the book to be edited
+    updateBook: (updatedBook: Book) => void; // Function to update the book's details
+}
 
+const EditBook: React.FC<EditBookProps> = () => {
     const { id } = useParams<{ id: string }>();
-    const bookId = Number(id); // Convert the `id` from the URL to a number
+    const bookId = Number(id);
+    const navigate = useNavigate();
 
-    const [books, setBooks] = useState<any[]>([]);
-
+    const [formData, setFormData] = useState<Book | null>(null);
+    console.log(formData, "djs form dataaaaa")
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
-            setBooks(response.data); // Kiritilgan malumotlarni olish
+            setFormData(response?.data?.data);
         } catch (error) {
-            console.error('Kitoblarni olishda xato', error);
+            console.error('error', error);
         }
     };
 
     useEffect(() => {
         fetchBooks();
     }, []);
-    const getBookById = (id: number) => {
-        return books?.data?.find((book) => book.id === id) || null;
+
+    const {book} = formData?.find((book) => book?.book?.id === bookId) || null;
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        console.log(name, value)
+        if (formData) {
+         const sass=  { ...formData, [name]: value }
+            console.log(sass, "daskdnasdsdns")
+        }
+    };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        navigate("/")
     };
 
-    const updateBook = (updatedBook: any) => {
-        console.log('Updated Book:', updatedBook);
-        // Logic to update the book in your app's state or database
-    };
+    if (!formData) return <Typography>Loading...</Typography>;
 
     return (
-        <div>
-            <EditBook
-                bookId={bookId}
-                getBookById={getBookById}
-                updateBook={updateBook}
-            />
-        </div>
+        <Paper elevation={3} sx={{ p: 4, maxWidth: 600, margin: 'auto', mt: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Edit Book
+            </Typography>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Title"
+                    name="title"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Author"
+                    name="author"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Cover URL"
+                    name="cover"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="ISBN"
+                    name="isbn"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Pages"
+                    name="pages"
+                    type="number"
+                    onChange={handleChange}
+                    required
+                />
+                <TextField
+                    fullWidth
+                    margin="normal"
+                    label="Published Year"
+                    name="published"
+                    type="number"
+                    onChange={handleChange}
+                    required
+                />
+                <Box sx={{ mt: 3 }}>
+                    <Button type="submit" variant="contained" color="primary">
+                        Save Changes
+                    </Button>
+                </Box>
+            </form>
+        </Paper>
     );
 };
 
-export default EditBookPage;
+export default EditBook;

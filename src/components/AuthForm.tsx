@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { Box, Button, TextField, Container, Typography, Paper, Grid, Avatar } from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { signup } from '../api';
 
 const AuthForm = () => {
@@ -23,48 +24,68 @@ const AuthForm = () => {
     };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
-            <Typography variant="h5" component="h1" sx={{ mb: 2 }}>
-                Ro'yxatdan o'tish
-            </Typography>
-            <TextField
-                label="Ism"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-            />
-            <TextField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-            />
-            <TextField
-                label="Kalit"
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-            />
-            <TextField
-                label="Maxfiy so'z"
-                type="password"
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-                fullWidth
-                required
-                sx={{ mb: 2 }}
-            />
-            <Button variant="contained" type="submit" fullWidth>
-                Ro'yxatdan o'tish
-            </Button>
-        </Box>
+        <Container maxWidth="xs">
+            <Paper elevation={3} sx={{ padding: '2rem', marginTop: '4rem' }}>
+                <Grid container direction="column" alignItems="center">
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5" gutterBottom>
+                        Register
+                    </Typography>
+                    <Box component="form" sx={{ mt: 1 }}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            type="email"
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Key"
+                            value={key}
+                            onChange={(e) => setKey(e.target.value)}
+                            required
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            fullWidth
+                            label="Secret"
+                            value={secret}
+                            onChange={(e) => setSecret(e.target.value)}
+                            required
+                            type="password"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            sx={{ mt: 3, mb: 2 }}
+                            onClick={handleSubmit}
+                        >
+                            Register
+                        </Button>
+                    </Box>
+                </Grid>
+            </Paper>
+        </Container>
     );
 };
 

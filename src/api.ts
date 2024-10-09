@@ -23,7 +23,7 @@ export const getBooks = async () => {
 };
 
 export const editBook = async (id: string, data: any) => {
-    const headers = authHeader('PUT', `/books/${id}`, JSON.stringify(data));
+    const headers = authHeader('PATCH', `/books/${id}`, JSON.stringify(data));
     return await axios.put(`${API_URL}/books/${id}`, data, { headers });
 };
 
