@@ -8,13 +8,13 @@ const Navbar = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    Kitob Boshqaruvi
+                    BookShelf
                 </Typography>
                 <Button color="inherit" component={Link} to="/signup">
-                    Ro'yxatdan o'tish
+                    Register
                 </Button>
                 <Button color="inherit" component={Link} to="/">
-                    Bosh sahifa
+                    Home
                 </Button>
             </Toolbar>
         </AppBar>

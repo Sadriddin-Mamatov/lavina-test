@@ -11,6 +11,10 @@ export const getUserInfo = async () => {
     const headers = authHeader('GET', '/myself', '');
     return await axios.get(`${API_URL}/myself`, { headers });
 };
+export const searchBook = async (title: string) => {
+    const headers = authHeader('GET', `/books/${title}`, '');
+    return await axios.get(`${API_URL}/books/${title}`, { headers });
+};
 
 export const addBook = async (data: any) => {
     const headers = authHeader('POST', '/books', JSON.stringify(data));
@@ -22,12 +26,12 @@ export const getBooks = async () => {
     return await axios.get(`${API_URL}/books`, { headers });
 };
 
-export const editBook = async (id: string, data: any) => {
-    const headers = authHeader('PATCH', `/books/${id}`, JSON.stringify(data));
-    return await axios.put(`${API_URL}/books/${id}`, data, { headers });
+export const updateBook = async (id: number, data: any) => {
+    const headers = authHeader('PATCH', `/books/${id}`, JSON.stringify({book: data}));
+    return await axios.patch(`${API_URL}/books/${id}`, {book:data}, { headers });
 };
 
-export const deleteBook = async (id: string) => {
+export const deleteBook = async (id: number) => {
     const headers = authHeader('DELETE', `/books/${id}`, '');
     return await axios.delete(`${API_URL}/books/${id}`, { headers });
 };

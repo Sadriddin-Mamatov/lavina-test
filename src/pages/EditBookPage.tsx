@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import {editBook, getBooks } from "../api";
+import {getBooks , updateBook} from "../api";
 import { Box, Button, TextField, Typography, Paper } from '@mui/material';
 
 interface Book {
@@ -14,8 +14,8 @@ interface Book {
 }
 
 interface EditBookProps {
-    bookId: number; // ID of the book to be edited
-    updateBook: (updatedBook: Book) => void; // Function to update the book's details
+    bookId: number;
+    updateBook: (updatedBook: Book) => void;
 }
 
 const EditBook: React.FC<EditBookProps> = () => {
@@ -24,7 +24,10 @@ const EditBook: React.FC<EditBookProps> = () => {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState<Book | null>(null);
-    console.log(formData, "djs form dataaaaa")
+    const [changedValue, setChangedValue] = useState<Book | null>(null);
+
+    const editBook=formData?.book;
+
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
@@ -39,16 +42,19 @@ const EditBook: React.FC<EditBookProps> = () => {
     }, []);
 
 
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        console.log(name, value)
         if (formData) {
-         const sass=  { ...formData, [name]: value }
-            console.log(sass, "daskdnasdsdns")
+            setChangedValue(prevState => ({ ...prevState, [name]: value }));
         }
     };
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        updateBook(id, changedValue)
         navigate("/")
+        window.location.reload()
     };
 
     if (!formData) return <Typography>Loading...</Typography>;
@@ -64,7 +70,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="Title"
                     name="title"
-                    value={formData?.title}
+                    defaultValue={editBook?.title}
                     onChange={handleChange}
                     required
                 />
@@ -73,6 +79,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="Author"
                     name="author"
+                    defaultValue={editBook?.author}
                     onChange={handleChange}
                     required
                 />
@@ -81,6 +88,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="Cover URL"
                     name="cover"
+                    defaultValue={editBook?.cover}
                     onChange={handleChange}
                     required
                 />
@@ -89,7 +97,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     margin="normal"
                     label="ISBN"
                     name="isbn"
-                    value={formData?.isbn}
+                    defaultValue={editBook?.isbn}
                     onChange={handleChange}
                     required
                 />
@@ -99,7 +107,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     label="Pages"
                     name="pages"
                     type="number"
-                    value={formData?.pages}
+                    defaultValue={editBook?.pages}
                     onChange={handleChange}
                     required
                 />
@@ -109,6 +117,7 @@ const EditBook: React.FC<EditBookProps> = () => {
                     label="Published Year"
                     name="published"
                     type="number"
+                    defaultValue={editBook?.published}
                     onChange={handleChange}
                     required
                 />

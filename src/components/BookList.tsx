@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getBooks } from '../api';
-import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
+import {deleteBook, getBooks} from '../api';
+import { List, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BookCard from "./BookCard";
 
@@ -11,9 +11,9 @@ const BookList = () => {
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
-            setBooks(response.data); // Kiritilgan malumotlarni olish
+            setBooks(response.data);
         } catch (error) {
-            console.error('Kitoblarni olishda xato', error);
+            console.error('Error', error);
         }
     };
 
@@ -26,12 +26,13 @@ const BookList = () => {
     };
 
     const handleDelete=(id: number)=>{
-
+        deleteBook(id).then(res=> res.status === 200 && window.location.reload());
     }
+
     return (
         <Box sx={{ mt: 4 }}>
             <Typography variant="h5" component="h1" sx={{ mb: 2 }}>
-                Kitoblar ro'yxati
+                Book Lists
             </Typography>
             <List className="card-body">
                 {books?.data?.map((item, index) => (
