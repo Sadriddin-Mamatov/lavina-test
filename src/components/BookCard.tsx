@@ -17,6 +17,7 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book, status, onEdit, onDelete }) => {
+
     const getStatusLabel = (status: number) => {
         switch (status) {
             case 0:

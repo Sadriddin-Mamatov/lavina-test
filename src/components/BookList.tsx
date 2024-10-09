@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { getBooks } from '../api';
-import { List, ListItem, ListItemText, Typography, Box } from '@mui/material';
+import {deleteBook, getBooks} from '../api';
+import { List, Typography, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BookCard from "./BookCard";
+import {log} from "node:util";
 
 const BookList = () => {
     const [books, setBooks] = useState<any[]>([]);
@@ -11,7 +12,7 @@ const BookList = () => {
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
-            setBooks(response.data); // Kiritilgan malumotlarni olish
+            setBooks(response.data);
         } catch (error) {
             console.error('Kitoblarni olishda xato', error);
         }
@@ -26,7 +27,7 @@ const BookList = () => {
     };
 
     const handleDelete=(id: number)=>{
-
+        deleteBook(id).then(res=> res.status === 200 && window.location.reload());
     }
     return (
         <Box sx={{ mt: 4 }}>
