@@ -16,10 +16,10 @@ const AuthForm = () => {
             if (response.data.isOk) {
                 localStorage.setItem('userKey', response.data.data.key);
                 localStorage.setItem('userSecret', response.data.data.secret);
-                alert('Ro\'yxatdan muvaffaqiyatli o\'tildi!');
+                alert('Successfully registered');
             }
         } catch (error) {
-            console.error('Ro\'yxatdan o\'tish muvaffaqiyatsiz', error);
+            console.error('Registration failed', error);
         }
     };
 

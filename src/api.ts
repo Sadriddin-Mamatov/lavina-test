@@ -11,6 +11,10 @@ export const getUserInfo = async () => {
     const headers = authHeader('GET', '/myself', '');
     return await axios.get(`${API_URL}/myself`, { headers });
 };
+export const searchBook = async (title: string) => {
+    const headers = authHeader('GET', `/books/${title}`, '');
+    return await axios.get(`${API_URL}/books/${title}`, { headers });
+};
 
 export const addBook = async (data: any) => {
     const headers = authHeader('POST', '/books', JSON.stringify(data));

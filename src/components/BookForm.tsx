@@ -11,6 +11,7 @@ const BookForm = () => {
         try {
             await addBook({ isbn });
             alert('Book successfully added');
+            window.location.reload()
             setIsbn('');
         } catch (error) {
             console.error('Error', error);
