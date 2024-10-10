@@ -23,8 +23,12 @@ import _ from 'lodash';
 const BookList = () => {
     const [books, setBooks] = useState<any[]>([]);
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const [status, setStatus] = useState();
     const [bookId, setBookId] = useState(null);
+    const [deleteBook, setDeleteBook] = useState(null);
+    const [deleteBookId, setDeleteBookId] = useState(null);
+
     const handleClose = () => setOpen(false);
     const fetchBooks = async () => {
         try {
@@ -45,9 +49,15 @@ const BookList = () => {
         setOpen(true)
     };
 
-    const handleDelete=(id: number)=>{
-        deleteBook(id).then(res=> res.status === 200 && window.location.reload());
+    const onDelete=(id: number)=>{
+        setOpenDelete(true)
+        setDeleteBookId(id)
+        setDeleteBook(books?.data?.find((book) => book?.book?.id === id).book)
     }
+    const handleDelete=()=>{
+        deleteBook(deleteBookId).then(res=> res.status === 200 && window.location.reload());
+    }
+
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         const newStatus = event.target.value as number;
         setStatus(newStatus);
@@ -95,9 +105,19 @@ const BookList = () => {
             />
             <List className="card-body">
                 {books?.map((item, index) => (
-                        <BookCard book={item.book || item} status={item.status} key={index} onEdit={handleEdit} onDelete={handleDelete}/>
+                        <BookCard book={item.book || item} status={item.status} key={index} onEdit={handleEdit} onDelete={onDelete}/>
                 ))}
             </List>
+            {
+                openDelete && <CustomModal open={openDelete} onClose={()=>setOpenDelete(false)} onSubmit={handleDelete}>
+                    <Typography variant="h6" id="custom-modal-title">
+                        Delete Book
+                    </Typography>
+                    <Typography id="custom-modal-description" sx={{ mt: 2 }}>
+                        {deleteBook.title}
+                    </Typography>
+                </CustomModal>
+            }
             <CustomModal open={open} onClose={handleClose} onSubmit={handleSubmit}>
                 <Typography variant="h6" id="custom-modal-title">
                     Edit Book Status

@@ -4,7 +4,7 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import { Container } from '@mui/material';
-import Myself from "./pages/MyProfile";
+import Profile from "./pages/Profile";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/myself" element={<Myself />} />
+            <Route path="/myself" element={<Profile />} />
           </Routes>
         </Container>
       </Router>
