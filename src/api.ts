@@ -31,7 +31,7 @@ export const updateBook = async (id: number, data: any) => {
     return await axios.patch(`${API_URL}/books/${id}`, {status:data}, { headers });
 };
 
-export const deleteBook = async (id: number) => {
+export const deleteBookById = async (id: number) => {
     const headers = authHeader('DELETE', `/books/${id}`, '');
     return await axios.delete(`${API_URL}/books/${id}`, { headers });
 };

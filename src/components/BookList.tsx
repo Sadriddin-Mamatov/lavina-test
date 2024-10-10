@@ -10,7 +10,7 @@ import {
     TextField
 } from '@mui/material';
 import {
-    deleteBook,
+    deleteBookById,
     getBooks,
     searchBook,
     updateBook
@@ -55,7 +55,7 @@ const BookList = () => {
         setDeleteBook(books?.data?.find((book) => book?.book?.id === id).book)
     }
     const handleDelete=()=>{
-        deleteBook(deleteBookId).then(res=> res.status === 200 && window.location.reload());
+        deleteBookById(deleteBookId).then(res=> res.status === 200 && window.location.reload());
     }
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
