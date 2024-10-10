@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useCallback} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     List,
     Typography,
@@ -17,7 +17,6 @@ import {
 } from '../api';
 import BookCard from "./BookCard";
 import CustomModal from "./Modal";
-import _ from 'lodash';
 
 
 const BookList = () => {
@@ -28,8 +27,11 @@ const BookList = () => {
     const [bookId, setBookId] = useState(null);
     const [deleteBook, setDeleteBook] = useState(null);
     const [deleteBookId, setDeleteBookId] = useState(null);
+    const [query, setQuery] = useState('');
+    const [debouncedQuery, setDebouncedQuery] = useState(query);
 
     const handleClose = () => setOpen(false);
+
     const fetchBooks = async () => {
         try {
             const response = await getBooks();
@@ -82,16 +84,24 @@ const BookList = () => {
             console.error('Error', error);
         }
     };
-    const debouncedSearch = useCallback(
-        _.debounce((query: string) => {
-            searchRequest(query);
-        }, 1000),
-        []
-    );
 
-    const handleSearch=(event: React.ChangeEvent<HTMLInputElement>) => {
-        debouncedSearch(event)
-    }
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedQuery(query);
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [query]);
+
+    useEffect(() => {
+        if (debouncedQuery) {
+            searchRequest(debouncedQuery);
+        }
+    }, [debouncedQuery]);
+
 
     return (
         <Box sx={{ mt: 4 }}>
@@ -100,7 +110,7 @@ const BookList = () => {
             </Typography>
             <TextField
                 label="Search Books"
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setQuery(e.target.value)}
                 sx={{ mb: 2 , width: 350}}
             />
             <List className="card-body">
