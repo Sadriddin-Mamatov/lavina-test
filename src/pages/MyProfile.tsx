@@ -10,7 +10,7 @@ const Myself = () => {
     const fetchUserInfo = async () => {
         try {
             const response = await getUserInfo();
-            setUserInfo(response.data);
+            setUserInfo(response.data.data);
         } catch (err) {
             setError('Foydalanuvchi ma\'lumotlarini olishda xato');
         } finally {

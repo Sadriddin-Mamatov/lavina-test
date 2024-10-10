@@ -27,8 +27,8 @@ export const getBooks = async () => {
 };
 
 export const updateBook = async (id: number, data: any) => {
-    const headers = authHeader('PATCH', `/books/${id}`, JSON.stringify({book: data}));
-    return await axios.patch(`${API_URL}/books/${id}`, {book:data}, { headers });
+    const headers = authHeader('PATCH', `/books/${id}`, JSON.stringify({status: data}));
+    return await axios.patch(`${API_URL}/books/${id}`, {status:data}, { headers });
 };
 
 export const deleteBook = async (id: number) => {

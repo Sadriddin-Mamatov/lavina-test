@@ -21,16 +21,18 @@ const BookCard: React.FC<BookCardProps> = ({ book, status, onEdit, onDelete }) =
     const getStatusLabel = (status: number) => {
         switch (status) {
             case 0:
-                return 'Available';
+                return 'New';
             case 1:
-                return 'Checked Out';
+                return 'Reading';
+            case 2:
+                return 'Finished';
             default:
                 return 'Unknown';
         }
     };
 
     return (
-        <Card sx={{ maxWidth: 345, m: 2 }}>
+        <Card sx={{ width: 245, m: 2 }}>
             <CardMedia
                 component="img"
                 height="300"
