@@ -124,7 +124,7 @@ const BookList = () => {
                         Delete Book
                     </Typography>
                     <Typography id="custom-modal-description" sx={{ mt: 2 }}>
-                        {deleteBook.title}
+                        {deleteBook?.title || "This book will be deleted."}
                     </Typography>
                 </CustomModal>
             }
